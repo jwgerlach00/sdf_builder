@@ -1,0 +1,16 @@
+<template>
+  <div>
+    <v-table>
+      <thead>
+        <tr>
+          <th>
+            Structure
+          </th>
+          <th>
+            Score
+          </th>
+        </tr>
+      </thead>
+    </v-table>
+  </div>
+</template>
