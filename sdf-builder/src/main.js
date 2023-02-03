@@ -9,6 +9,8 @@ import './assets/style.css'
 
 loadFonts()
 
+export const API_URL = 'http://0.0.0.0:5006/' // For non-docker
+
 createApp(App)
   .use(router)
   .use(store)

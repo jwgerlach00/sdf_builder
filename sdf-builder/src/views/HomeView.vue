@@ -13,6 +13,7 @@
           <v-col cols="6">
             <KetcherDraw ref="ketcherDraw"/>
             <v-btn height="50px" block @click="addMol()">Add to table</v-btn>
+            <v-btn @click="test()">Test</v-btn>
           </v-col>
 
           <!-- Table -->
@@ -28,9 +29,15 @@
 
 <script setup>
 import { ref } from 'vue'
+import axios from 'axios'
+import { API_URL } from '@/main.js'
 
 import KetcherDraw from '@/components/KetcherDraw.vue'
 import DataTable from '@/components/DataTable.vue'
+
+function test () {
+  axios.get(`${API_URL}/print_crap`)
+}
 
 const ketcherDraw = ref(null)
 const smi = ref('')
@@ -38,6 +45,8 @@ const smi = ref('')
 async function addMol () {
   smi.value = await ketcherDraw.value.getSmiles()
   console.log(smi.value)
+  console.log('ape')
+  axios.get(`${API_URL}/init_db`)
 }
 </script>
 
