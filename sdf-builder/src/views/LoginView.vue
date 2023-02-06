@@ -44,7 +44,8 @@
         </v-row>
         <v-row dense>
           <v-col>
-            <v-alert type="error" v-if="error">{{ error }}</v-alert>
+            <v-alert type="error" v-if="errorMsg">{{ errorMsg }}</v-alert>
+            <v-alert type="success" v-if="successMsg">{{ successMsg }}</v-alert>
           </v-col>
         </v-row>
         <v-btn @click="test()">test</v-btn>
@@ -68,7 +69,9 @@ const password = ref('')
 const confirmPassword = ref('')
 const eyePassword = ref(true)
 const eyeConfirm = ref(true)
-const error = ref(false)
+
+const errorMsg = ref('')
+const successMsg = ref('')
 
 function test () {
   axios.get(`${API_URL}/print_crap`)
@@ -82,22 +85,33 @@ function login () {
     router.push({ name: 'home' })
   }).catch(e => {
     if (e.response.status === 401) {
-      error.value = 'Invalid username or password'
+      errorMsg.value = 'Invalid username or password'
     } else {
-      error.value = 'An error occurred'
+      errorMsg.value = 'An errorMsg occurred'
     }
   })
 }
 
 function register () {
-  if (password.value !== confirmPassword.value) {
-    error.value = 'Passwords do not match'
+  if (username.value === '' || username.value === '') {
+    errorMsg.value = 'Username cannot be empty'
+  } else if (password.value === '' || confirmPassword.value === '') {
+    errorMsg.value = 'Password cannot be empty'
+  } else if (password.value !== confirmPassword.value) {
+    errorMsg.value = 'Passwords do not match'
   } else {
     axios.post(`${API_URL}/register`, {
       username: username.value,
       password: password.value
+    }).then(_ => {
+      successMsg.value = 'User created successfully'
+    }).catch(e => {
+      if (e.response.status === 409) {
+        errorMsg.value = 'Username already exists'
+      } else {
+        errorMsg.value = 'An error occurred'
+      }
     })
-    error.value = false
   }
 }
 

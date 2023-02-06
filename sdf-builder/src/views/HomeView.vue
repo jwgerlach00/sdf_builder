@@ -14,6 +14,8 @@
             <KetcherDraw ref="ketcherDraw"/>
             <v-btn height="50px" block @click="addMol()">Add to table</v-btn>
             <v-btn @click="test()">Test</v-btn>
+            <v-btn @click="session1()">Session1</v-btn>
+            <v-btn @click="session2()">Session2</v-btn>
           </v-col>
 
           <!-- Table -->
@@ -36,8 +38,18 @@ import KetcherDraw from '@/components/KetcherDraw.vue'
 import DataTable from '@/components/DataTable.vue'
 
 function test () {
-  axios.get(`${API_URL}/print_crap`)
+  axios.post(`${API_URL}/get_data`, { api_key: 'jacob' })
 }
+
+function session1 () {
+  axios.get(`${API_URL}/session_1`, { credentials: 'include' })
+}
+
+function session2 () {
+  axios.get(`${API_URL}/session_2`, { credentials: 'include' })
+}
+
+//, headers: { 'Access-Control-Allow-Origin': '*' }
 
 const ketcherDraw = ref(null)
 const smi = ref('')
