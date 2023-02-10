@@ -55,12 +55,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 import axios from 'axios'
 import { API_URL } from '@/main.js'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+
+onBeforeMount(() => {
+  axios.get(`${API_URL}/logout`)
+})
 
 const modelLoginNav = ref('login')
 
@@ -74,7 +78,7 @@ const errorMsg = ref('')
 const successMsg = ref('')
 
 function test () {
-  axios.get(`${API_URL}/print_crap`)
+  axios.post(`${API_URL}/add_mol_to_table`, { smi: 'testing' })
 }
 
 function login () {

@@ -1,6 +1,9 @@
 <template>
   <v-container>
     <v-row>
+      <v-btn @click="logout()">Logout</v-btn>
+    </v-row>
+    <v-row>
       <v-col cols="12">
         <!-- Title -->
         <v-img src="bob-builder.png" class="bob-builder"/>
@@ -13,9 +16,6 @@
           <v-col cols="6">
             <KetcherDraw ref="ketcherDraw"/>
             <v-btn height="50px" block @click="addMol()">Add to table</v-btn>
-            <v-btn @click="test()">Test</v-btn>
-            <v-btn @click="session1()">Session1</v-btn>
-            <v-btn @click="session2()">Session2</v-btn>
           </v-col>
 
           <!-- Table -->
@@ -30,26 +30,23 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 import axios from 'axios'
 import { API_URL } from '@/main.js'
+import { useRouter } from 'vue-router'
 
 import KetcherDraw from '@/components/KetcherDraw.vue'
 import DataTable from '@/components/DataTable.vue'
 
-function test () {
-  axios.post(`${API_URL}/get_data`, { api_key: 'jacob' })
-}
+const router = useRouter()
 
-function session1 () {
-  axios.get(`${API_URL}/session_1`, { credentials: 'include' })
-}
-
-function session2 () {
-  axios.get(`${API_URL}/session_2`, { credentials: 'include' })
-}
-
-//, headers: { 'Access-Control-Allow-Origin': '*' }
+onBeforeMount(() => {
+  axios.get(`${API_URL}/is_authenticated`).catch(e => {
+    if (e.response.status === 401) {
+      router.push({ name: 'login' })
+    }
+  })
+})
 
 const ketcherDraw = ref(null)
 const smi = ref('')
@@ -58,7 +55,12 @@ async function addMol () {
   smi.value = await ketcherDraw.value.getSmiles()
   console.log(smi.value)
   console.log('ape')
-  axios.get(`${API_URL}/init_db`)
+  axios.post(`${API_URL}/add_mol_to_table`, { smi: smi.value })
+}
+
+function logout () {
+  axios.get(`${API_URL}/logout`)
+  router.push({ name: 'login' })
 }
 </script>
 

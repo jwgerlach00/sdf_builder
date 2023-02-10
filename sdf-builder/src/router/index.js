@@ -4,12 +4,17 @@ import HomeView from '../views/HomeView.vue'
 
 const routes = [
   {
-    path: '/',
+    path: '/login',
     name: 'login',
     component: LoginView
   },
   {
-    path: '/home',
+    path: '/tables',
+    name: 'tables',
+    component: TablesView
+  },
+  {
+    path: '/',
     name: 'home',
     component: HomeView
   }
