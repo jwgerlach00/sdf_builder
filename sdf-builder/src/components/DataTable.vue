@@ -29,15 +29,3 @@ const props = defineProps({
   }
 })
 </script>
-
-<style scoped>
-div.table-scroll {
-  max-height: 500px;
-  overflow: auto;
-  display: block;
-  border-radius: 10px;
-}
-div.v-table {
-  border: 10pt;
-}
-</style>

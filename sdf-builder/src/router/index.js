@@ -12,12 +12,14 @@ const routes = [
   {
     path: '/tables',
     name: 'tables',
-    component: TablesView
+    component: TablesView,
+    props: true
   },
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: HomeView,
+    props: true
   }
 ]
 

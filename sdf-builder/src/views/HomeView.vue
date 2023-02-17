@@ -34,12 +34,13 @@ import { ref, onBeforeMount } from 'vue'
 import axios from 'axios'
 import { API_URL } from '@/main.js'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 
 import KetcherDraw from '@/components/KetcherDraw.vue'
 import DataTable from '@/components/DataTable.vue'
 
 const router = useRouter()
-const mols = ref([])
+const store = useStore()
 
 onBeforeMount(() => {
   axios.get(`${API_URL}/is_authenticated`).catch(e => {
@@ -48,6 +49,8 @@ onBeforeMount(() => {
     }
   })
 })
+
+const mols = ref(store.getters.tableData)
 
 const ketcherDraw = ref(null)
 const smi = ref('')

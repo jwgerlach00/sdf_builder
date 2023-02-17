@@ -48,7 +48,6 @@
             <v-alert type="success" v-if="successMsg">{{ successMsg }}</v-alert>
           </v-col>
         </v-row>
-        <v-btn @click="test()">test</v-btn>
       </v-card>
     </v-row>
   </v-container>
@@ -77,16 +76,12 @@ const eyeConfirm = ref(true)
 const errorMsg = ref('')
 const successMsg = ref('')
 
-function test () {
-  axios.post(`${API_URL}/add_mol_to_table`, { smi: 'testing' })
-}
-
 function login () {
   axios.post(`${API_URL}/login`, {
     username: username.value,
     password: password.value
   }).then(res => {
-    router.push({ name: 'home' })
+    router.push({ name: 'tables' })
   }).catch(e => {
     if (e.response.status === 401) {
       errorMsg.value = 'Invalid username or password'
