@@ -22,6 +22,6 @@ iframe.ketcher-frame {
   min-height: 450px;
   border: none;
   overflow: hidden;
-  border-radius: 20px;
+  border-radius: 10px;
 }
 </style>

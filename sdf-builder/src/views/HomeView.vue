@@ -20,7 +20,7 @@
 
           <!-- Table -->
           <v-col cols="6">
-            <DataTable/>
+            <DataTable :mols="mols"/>
           </v-col>
         </v-row>
       </v-col>
@@ -39,6 +39,7 @@ import KetcherDraw from '@/components/KetcherDraw.vue'
 import DataTable from '@/components/DataTable.vue'
 
 const router = useRouter()
+const mols = ref([])
 
 onBeforeMount(() => {
   axios.get(`${API_URL}/is_authenticated`).catch(e => {
@@ -55,7 +56,12 @@ async function addMol () {
   smi.value = await ketcherDraw.value.getSmiles()
   console.log(smi.value)
   console.log('ape')
-  axios.post(`${API_URL}/add_mol_to_table`, { smi: smi.value })
+  axios.post(`${API_URL}/add_mol_to_table`, { smi: smi.value }).then(res => {
+    mols.value = res.data
+    console.log(res.data)
+  }).catch(e => {
+    console.log(e)
+  })
 }
 
 function logout () {
