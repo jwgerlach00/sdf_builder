@@ -7,7 +7,10 @@
     </v-row>
     <v-row>
       <v-col>
-        <v-btn @click="newTable()">New table</v-btn>
+        <v-btn @click="newTable()">
+          <v-icon icon="mdi-file-plus"/>
+          <p>New table</p>
+        </v-btn>
       </v-col>
     </v-row>
     <v-row>
