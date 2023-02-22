@@ -29,9 +29,18 @@
 
           <!-- Table -->
           <v-col cols="6">
-            <DataTable :mols="mols"/>
-            <v-btn @click='showAddColumnPopUp=true'>Add column</v-btn>
-            <AddColumnPopUp v-model="showAddColumnPopUp"/>
+            <v-row>
+              <v-col>
+                <DataTable :mols="mols"/>
+                <!-- <v-btn @click='showAddColumnPopUp=true'>Add column</v-btn> -->
+                <AddColumnPopUp v-model="showAddColumnPopUp"/>
+              </v-col>
+            </v-row>
+            <v-row dense>
+              <v-col>
+                <v-btn @click="downloadSDF()">Download SDF</v-btn>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
       </v-col>
@@ -83,6 +92,23 @@ async function addMol () {
 function logout () {
   axios.get(`${API_URL}/logout`)
   router.push({ name: 'login' })
+}
+
+function downloadSDF () {
+  axios.post(`${API_URL}/download_sdf`, { table_name: store.getters.tableName }).then(res => {
+    const today = new Date()
+    const dd = String(today.getDate()).padStart(2, '0')
+    const mm = String(today.getMonth() + 1).padStart(2, '0') // Jan is 0!
+    const yyyy = today.getFullYear()
+
+    const blob = new Blob([res.data], { type: 'text/plain' })
+    const link = document.createElement('a')
+    link.href = window.URL.createObjectURL(blob)
+    link.download = `${mm}_${dd}_${yyyy}_${store.getters.tableName}.sdf`
+    link.click()
+  }).catch(e => {
+    console.log(e)
+  })
 }
 
 </script>
