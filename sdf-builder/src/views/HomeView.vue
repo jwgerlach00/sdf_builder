@@ -1,7 +1,16 @@
 <template>
   <v-container>
     <v-row>
-      <v-btn @click="logout()">Logout</v-btn>
+      <v-col class="text-right">
+        <v-btn-toggle>
+          <v-btn @click="router.push('tables')">
+            <v-icon icon="mdi-grid"/>
+          </v-btn>
+          <v-btn @click="logout()">
+            <v-icon icon="mdi-logout-variant"/>
+          </v-btn>
+        </v-btn-toggle>
+      </v-col>
     </v-row>
     <v-row>
       <v-col cols="12">
@@ -21,6 +30,8 @@
           <!-- Table -->
           <v-col cols="6">
             <DataTable :mols="mols"/>
+            <v-btn @click='showAddColumnPopUp=true'>Add column</v-btn>
+            <AddColumnPopUp v-model="showAddColumnPopUp"/>
           </v-col>
         </v-row>
       </v-col>
@@ -38,6 +49,7 @@ import { useStore } from 'vuex'
 
 import KetcherDraw from '@/components/KetcherDraw.vue'
 import DataTable from '@/components/DataTable.vue'
+import AddColumnPopUp from '@/components/AddColumnPopUp.vue'
 
 const router = useRouter()
 const store = useStore()
@@ -50,6 +62,8 @@ onBeforeMount(() => {
   })
 })
 
+const showAddColumnPopUp = ref(false)
+
 const mols = ref(store.getters.tableData)
 
 const ketcherDraw = ref(null)
@@ -57,9 +71,8 @@ const smi = ref('')
 
 async function addMol () {
   smi.value = await ketcherDraw.value.getSmiles()
-  console.log(smi.value)
-  console.log('ape')
-  axios.post(`${API_URL}/add_mol_to_table`, { smi: smi.value }).then(res => {
+  console.log(store.getters.tableName)
+  axios.post(`${API_URL}/add_mol_to_table`, { smi: smi.value, table_name: store.getters.tableName }).then(res => {
     mols.value = res.data
     console.log(res.data)
   }).catch(e => {
@@ -71,6 +84,7 @@ function logout () {
   axios.get(`${API_URL}/logout`)
   router.push({ name: 'login' })
 }
+
 </script>
 
 <style scoped>

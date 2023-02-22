@@ -21,3 +21,6 @@ div.table-scroll {
     display: block;
     border-radius: 10px;
 }
+div.v-text-field {
+    color: #f8f8f2;
+}
